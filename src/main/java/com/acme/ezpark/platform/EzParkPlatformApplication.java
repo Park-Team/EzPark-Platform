@@ -1,4 +1,4 @@
-package com.example.ezparkplatform;
+package com.acme.ezpark.platform;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
