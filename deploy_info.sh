@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# EzPark Platform - Google Cloud Storage Integration Deployment Script
+
+echo "🚀 EzPark Platform - Google Cloud Storage Integration"
+echo "======================================================"
+echo ""
+
+echo "📋 Resumen de Cambios Implementados:"
+echo "✅ Integración de Google Cloud Storage"
+echo "✅ Configuración de fallback a almacenamiento local"
+echo "✅ Soporte para variables de entorno de producción"
+echo "✅ Endpoint de verificación de configuración GCS"
+echo "✅ Documentación completa incluida"
+echo ""
+
+echo "📁 Archivos Nuevos Creados:"
+echo "  - GoogleCloudStorageConfig.java"
+echo "  - GoogleCloudStorageService.java"
+echo "  - GCS_SETUP.md"
+echo "  - RENDER_GCS_DEPLOYMENT.md"
+echo "  - DEPLOYMENT_SUMMARY.md"
+echo ""
+
+echo "🔧 Archivos Modificados:"
+echo "  - pom.xml (agregada dependencia GCS)"
+echo "  - FileStorageService.java (integración GCS)"
+echo "  - FileUploadController.java (endpoint test)"
+echo "  - application.properties (config GCS)"
+echo "  - application-prod.properties (config prod)"
+echo "  - .gitignore (credenciales GCS)"
+echo ""
+
+echo "🌐 Variables de Entorno para Render:"
+echo "  - GCS_BUCKET=ezpark-images-bucket"
+echo "  - GCS_PROJECT_ID=ezpark-platform"
+echo "  - GCS_ENABLED=true"
+echo "  - GOOGLE_APPLICATION_CREDENTIALS_JSON={...}"
+echo ""
+
+echo "📝 Comando de Commit Sugerido:"
+echo "git add ."
+echo "git commit -m \"feat: Add Google Cloud Storage integration for persistent image storage"
+echo ""
+echo "- Add Google Cloud Storage dependency and configuration"
+echo "- Implement GoogleCloudStorageService with fallback to local storage"
+echo "- Add GCS configuration for production deployment"
+echo "- Add test endpoint to verify GCS status"
+echo "- Update FileStorageService to use GCS when available"
+echo "- Images now persist across deployments in production\""
+echo ""
+
+echo "🚨 Pasos Post-Deploy:"
+echo "1. Configurar Google Cloud Storage (ver GCS_SETUP.md)"
+echo "2. Agregar variables de entorno en Render"
+echo "3. Verificar endpoint: /api/v1/uploads/test-gcs-config"
+echo "4. Probar subida de imágenes"
+echo ""
+
+echo "✅ El proyecto está listo para el commit y deploy!"
+echo "📖 Lee DEPLOYMENT_SUMMARY.md para más detalles"

@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Google Cloud Credentials ###
+service-account-key.json
+*.json
+google-credentials.json
+
+### File Uploads ###
+uploads/

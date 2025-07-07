@@ -1,11 +1,13 @@
 package com.acme.ezpark.platform.shared.interfaces.rest;
 
 import com.acme.ezpark.platform.shared.infrastructure.storage.FileStorageService;
+import com.acme.ezpark.platform.shared.infrastructure.web.GoogleCloudStorageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,9 +23,31 @@ import java.util.Map;
 public class FileUploadController {
 
     private final FileStorageService fileStorageService;
+    
+    @Autowired(required = false)
+    private GoogleCloudStorageService googleCloudStorageService;
 
     public FileUploadController(FileStorageService fileStorageService) {
         this.fileStorageService = fileStorageService;
+    }
+
+    @Operation(summary = "Test Google Cloud Storage configuration", description = "Check if GCS is properly configured")
+    @GetMapping("/test-gcs-config")
+    public ResponseEntity<Map<String, Object>> testGcsConfig() {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            boolean gcsEnabled = googleCloudStorageService != null && googleCloudStorageService.isEnabled();
+            response.put("gcsEnabled", gcsEnabled);
+            response.put("gcsAvailable", googleCloudStorageService != null);
+            response.put("storageType", gcsEnabled ? "Google Cloud Storage" : "Local Storage");
+            response.put("message", gcsEnabled ? "GCS is properly configured" : "Using local storage fallback");
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", "Error checking GCS configuration: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
 
     @Operation(summary = "Upload profile picture", description = "Upload a single profile picture for a user")
