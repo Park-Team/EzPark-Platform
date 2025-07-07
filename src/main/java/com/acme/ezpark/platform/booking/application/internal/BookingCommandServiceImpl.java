@@ -30,7 +30,6 @@ public class BookingCommandServiceImpl implements BookingCommandService {
         var booking = new Booking(
             command.userId(),
             command.parkingId(),
-            command.vehicleId(),
             command.startTime(),
             command.endTime(),
             parking.getPricePerHour(),

@@ -9,7 +9,6 @@ public record BookingResource(
     Long id,
     Long userId,
     Long parkingId,
-    Long vehicleId,
     Instant startTime,
     Instant endTime,
     Instant actualStartTime,

@@ -8,7 +8,6 @@ public class BookingResourceFromEntityAssembler {    public static BookingResour
             entity.getId(),
             entity.getUserId(),
             entity.getParkingId(),
-            entity.getVehicleId(),
             entity.getStartTime(),
             entity.getEndTime(),
             entity.getActualStartTime(),

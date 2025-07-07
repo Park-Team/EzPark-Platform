@@ -7,7 +7,6 @@ public class CreateBookingCommandFromResourceAssembler {    public static Create
         return new CreateBookingCommand(
             userId,
             resource.parkingId(),
-            resource.vehicleId(),
             resource.startTime(),
             resource.endTime(),
             resource.notes()

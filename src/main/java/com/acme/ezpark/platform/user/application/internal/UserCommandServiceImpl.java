@@ -6,12 +6,12 @@ import com.acme.ezpark.platform.user.domain.model.commands.LoginUserCommand;
 import com.acme.ezpark.platform.user.domain.model.commands.UpdateUserCommand;
 import com.acme.ezpark.platform.user.domain.model.commands.UpgradeUserRoleCommand;
 import com.acme.ezpark.platform.user.domain.model.commands.RemoveUserRoleCommand;
+import com.acme.ezpark.platform.user.domain.model.commands.UpdateUserProfilePictureCommand;
 import com.acme.ezpark.platform.user.domain.model.valueobjects.UserRole;
 import com.acme.ezpark.platform.user.domain.services.UserCommandService;
 import com.acme.ezpark.platform.user.infrastructure.persistence.jpa.repositories.UserRepository;
 import com.acme.ezpark.platform.booking.infrastructure.persistence.jpa.repositories.BookingRepository;
 import com.acme.ezpark.platform.parking.infrastructure.persistence.jpa.repositories.ParkingRepository;
-import com.acme.ezpark.platform.vehicle.infrastructure.persistence.jpa.repositories.VehicleRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,16 +23,13 @@ public class UserCommandServiceImpl implements UserCommandService {
     private final UserRepository userRepository;
     private final BookingRepository bookingRepository;
     private final ParkingRepository parkingRepository;
-    private final VehicleRepository vehicleRepository;
 
     public UserCommandServiceImpl(UserRepository userRepository,
                                 BookingRepository bookingRepository,
-                                ParkingRepository parkingRepository,
-                                VehicleRepository vehicleRepository) {
+                                ParkingRepository parkingRepository) {
         this.userRepository = userRepository;
         this.bookingRepository = bookingRepository;
         this.parkingRepository = parkingRepository;
-        this.vehicleRepository = vehicleRepository;
     }
 
     @Override
@@ -143,12 +140,16 @@ public class UserCommandServiceImpl implements UserCommandService {
                 bookingRepository.save(booking);
             }
         });
-        
+        // Note: Vehicle cleanup removed as vehicle module was eliminated
+    }
 
-        var myVehicles = vehicleRepository.findByUserId(userId);
-        myVehicles.forEach(vehicle -> {
-            vehicle.deactivate();
-            vehicleRepository.save(vehicle);
-        });
+    @Override
+    public Optional<User> handle(UpdateUserProfilePictureCommand command) {
+        return userRepository.findById(command.userId())
+            .map(user -> {
+                user.setProfilePicture(command.profilePictureUrl());
+                userRepository.save(user);
+                return user;
+            });
     }
 }

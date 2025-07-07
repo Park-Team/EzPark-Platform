@@ -16,7 +16,7 @@ public class OpenApiConfiguration {
         return new OpenAPI()
                 .info(new Info()
                         .title("EzPark Platform API")
-                        .description("P2P Parking Solution Platform - Backend API for managing users, vehicles, parking spaces, bookings, payments, schedules, and locations")
+                        .description("P2P Parking Solution Platform - Backend API for managing users, parking spaces, bookings, schedules, and locations")
                         .version("v1.0.0")
                         .contact(new Contact()
                                 .name("EzPark Platform Team")

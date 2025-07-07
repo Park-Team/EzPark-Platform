@@ -16,7 +16,7 @@ public class ParkingResourceFromEntityAssembler {
             entity.getHeight(),
             entity.getPricePerHour(),
             entity.getDescription(),
-            entity.getImageUrl(),
+            entity.getImageUrls(),
             entity.getIsAvailable(),
             entity.getParkingType()
         );

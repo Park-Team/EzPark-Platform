@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "parkings")
@@ -45,8 +47,10 @@ public class Parking {
     @Column(length = 1000)
     private String description;
     
-    @Column(length = 500)
-    private String imageUrl;
+    @ElementCollection
+    @CollectionTable(name = "parking_images", joinColumns = @JoinColumn(name = "parking_id"))
+    @Column(name = "image_url", length = 500)
+    private List<String> imageUrls = new ArrayList<>();
     
     @Column(nullable = false)
     private Boolean isAvailable = true;
@@ -65,7 +69,7 @@ public class Parking {
 
     public Parking(Long ownerId, String address, BigDecimal latitude, BigDecimal longitude, 
                   BigDecimal width, BigDecimal length, BigDecimal height, BigDecimal pricePerHour,
-                  String description, String parkingType) {
+                  String description, String parkingType, List<String> imageUrls) {
         this.ownerId = ownerId;
         this.address = address;
         this.latitude = latitude;
@@ -76,6 +80,7 @@ public class Parking {
         this.pricePerHour = pricePerHour;
         this.description = description;
         this.parkingType = parkingType;
+        this.imageUrls = imageUrls != null ? new ArrayList<>(imageUrls) : new ArrayList<>();
         this.createdAt = new java.util.Date();
         this.updatedAt = new java.util.Date();
     }
@@ -121,8 +126,18 @@ public class Parking {
         return description;
     }
     
-    public String getImageUrl() {
-        return imageUrl;
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+    
+    public void addImageUrl(String imageUrl) {
+        if (imageUrls.size() < 3) {
+            imageUrls.add(imageUrl);
+        }
+    }
+    
+    public void removeImageUrl(String imageUrl) {
+        imageUrls.remove(imageUrl);
     }
     
     public Boolean getIsAvailable() {

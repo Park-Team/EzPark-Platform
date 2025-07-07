@@ -4,7 +4,6 @@ import java.time.Instant;
 
 public record CreateBookingResource(
     Long parkingId,
-    Long vehicleId,
     Instant startTime,
     Instant endTime,
     String notes

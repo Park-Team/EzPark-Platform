@@ -28,9 +28,6 @@ public class Booking {
     private Long parkingId;
     
     @Column(nullable = false)
-    private Long vehicleId;
-    
-    @Column(nullable = false)
     private Instant startTime;
     
     @Column(nullable = false)
@@ -71,10 +68,6 @@ public class Booking {
     public Long getParkingId() {
         return parkingId;
     }
-    
-    public Long getVehicleId() {
-        return vehicleId;
-    }
       public Instant getStartTime() {
         return startTime;
     }
@@ -113,11 +106,10 @@ public class Booking {
     public java.util.Date getUpdatedAt() {
         return updatedAt;
     }    // Constructor
-    public Booking(Long userId, Long parkingId, Long vehicleId, Instant startTime, 
+    public Booking(Long userId, Long parkingId, Instant startTime, 
                   Instant endTime, BigDecimal pricePerHour, String notes) {
         this.userId = userId;
         this.parkingId = parkingId;
-        this.vehicleId = vehicleId;
         this.startTime = startTime;
         this.endTime = endTime;
         this.totalPrice = calculateTotalPrice(startTime, endTime, pricePerHour);

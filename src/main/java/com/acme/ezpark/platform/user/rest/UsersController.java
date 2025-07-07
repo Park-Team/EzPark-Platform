@@ -4,6 +4,7 @@ import com.acme.ezpark.platform.user.domain.model.queries.GetAllUsersQuery;
 import com.acme.ezpark.platform.user.domain.model.queries.GetUserByIdQuery;
 import com.acme.ezpark.platform.user.domain.model.queries.GetUserByEmailQuery;
 import com.acme.ezpark.platform.user.domain.model.commands.RemoveUserRoleCommand;
+import com.acme.ezpark.platform.user.domain.model.commands.UpdateUserProfilePictureCommand;
 import com.acme.ezpark.platform.user.domain.model.valueobjects.UserRole;
 import com.acme.ezpark.platform.user.domain.services.UserCommandService;
 import com.acme.ezpark.platform.user.domain.services.UserQueryService;
@@ -18,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/api/v1/users", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -194,10 +196,32 @@ public class UsersController {
     }
     
     @DeleteMapping("/remove-guest-role/{userId}")
-    @Operation(summary = "Remove GUEST role", description = "Remove GUEST role from user - cancels all bookings and deactivates vehicles")
+    @Operation(summary = "Remove GUEST role", description = "Remove GUEST role from user - cancels all bookings")
     public ResponseEntity<UserResource> removeGuestRole(@PathVariable Long userId) {
         var removeCommand = new RemoveUserRoleCommand(userId, UserRole.GUEST);
         var user = userCommandService.handle(removeCommand);
+        
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
+        return ResponseEntity.ok(userResource);
+    }
+    
+    @PutMapping("/{userId}/profile-picture")
+    @Operation(summary = "Update user profile picture", description = "Update user profile picture URL")
+    public ResponseEntity<UserResource> updateUserProfilePicture(
+            @Parameter(description = "User ID") @PathVariable Long userId,
+            @RequestBody Map<String, String> request) {
+        
+        String profilePictureUrl = request.get("profilePictureUrl");
+        if (profilePictureUrl == null || profilePictureUrl.trim().isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+        
+        var updateCommand = new UpdateUserProfilePictureCommand(userId, profilePictureUrl);
+        var user = userCommandService.handle(updateCommand);
         
         if (user.isEmpty()) {
             return ResponseEntity.notFound().build();
