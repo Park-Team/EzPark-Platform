@@ -145,11 +145,22 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public Optional<User> handle(UpdateUserProfilePictureCommand command) {
+        System.out.println("=== UpdateUserProfilePictureCommand ===");
+        System.out.println("UserId: " + command.userId());
+        System.out.println("ProfilePictureUrl: " + command.profilePictureUrl());
+        
         return userRepository.findById(command.userId())
             .map(user -> {
+                System.out.println("Usuario encontrado: " + user.getEmail());
+                System.out.println("Imagen anterior: " + user.getProfilePicture());
+                
                 user.setProfilePicture(command.profilePictureUrl());
-                userRepository.save(user);
-                return user;
+                User savedUser = userRepository.save(user);
+                
+                System.out.println("Imagen nueva: " + savedUser.getProfilePicture());
+                System.out.println("Usuario guardado exitosamente");
+                
+                return savedUser;
             });
     }
 }

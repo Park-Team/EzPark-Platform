@@ -215,8 +215,15 @@ public class UsersController {
             @Parameter(description = "User ID") @PathVariable Long userId,
             @RequestBody Map<String, String> request) {
         
+        System.out.println("=== UPDATE PROFILE PICTURE ENDPOINT ===");
+        System.out.println("UserId: " + userId);
+        System.out.println("Request body: " + request);
+        
         String profilePictureUrl = request.get("profilePictureUrl");
+        System.out.println("ProfilePictureUrl: " + profilePictureUrl);
+        
         if (profilePictureUrl == null || profilePictureUrl.trim().isEmpty()) {
+            System.out.println("ERROR: profilePictureUrl is null or empty");
             return ResponseEntity.badRequest().build();
         }
         
@@ -224,9 +231,11 @@ public class UsersController {
         var user = userCommandService.handle(updateCommand);
         
         if (user.isEmpty()) {
+            System.out.println("ERROR: User not found or update failed");
             return ResponseEntity.notFound().build();
         }
         
+        System.out.println("SUCCESS: User profile picture updated");
         var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
         return ResponseEntity.ok(userResource);
     }
