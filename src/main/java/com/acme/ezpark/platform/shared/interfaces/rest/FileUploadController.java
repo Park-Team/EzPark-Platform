@@ -155,14 +155,21 @@ public class FileUploadController {
             @RequestParam("url") String imageUrl) {
         
         try {
+            System.out.println("=== DELETE IMAGE REQUEST ===");
+            System.out.println("Image URL to delete: " + imageUrl);
+            
             fileStorageService.deleteFile(imageUrl);
             
             Map<String, String> response = new HashMap<>();
             response.put("message", "Image deleted successfully");
             response.put("deletedUrl", imageUrl);
             
+            System.out.println("✅ Image deletion completed successfully");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.err.println("❌ Error deleting image: " + e.getMessage());
+            e.printStackTrace();
+            
             Map<String, String> error = new HashMap<>();
             error.put("error", "Error deleting image: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
