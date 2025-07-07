@@ -51,7 +51,8 @@ public class ParkingCommandServiceImpl implements ParkingCommandService {
                     command.height(),
                     command.pricePerHour(),
                     command.description(),
-                    command.parkingType()
+                    command.parkingType(),
+                    command.imageUrls()
                 );
                 parkingRepository.save(parking);
                 return parking;

@@ -178,7 +178,7 @@ public class Parking {
     }
     
     public void updateParking(String address, BigDecimal width, BigDecimal length, BigDecimal height,
-                             BigDecimal pricePerHour, String description, String parkingType) {
+                             BigDecimal pricePerHour, String description, String parkingType, List<String> imageUrls) {
         this.address = address;
         this.width = width;
         this.length = length;
@@ -186,7 +186,16 @@ public class Parking {
         this.pricePerHour = pricePerHour;
         this.description = description;
         this.parkingType = parkingType;
+        if (imageUrls != null) {
+            this.imageUrls.clear();
+            this.imageUrls.addAll(imageUrls);
+        }
         this.updatedAt = new java.util.Date();
+    }
+    
+    public void updateParking(String address, BigDecimal width, BigDecimal length, BigDecimal height,
+                             BigDecimal pricePerHour, String description, String parkingType) {
+        updateParking(address, width, length, height, pricePerHour, description, parkingType, null);
     }
     
     public void setAvailability(boolean isAvailable) {

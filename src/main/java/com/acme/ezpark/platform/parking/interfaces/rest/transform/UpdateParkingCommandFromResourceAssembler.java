@@ -13,7 +13,8 @@ public class UpdateParkingCommandFromResourceAssembler {
             resource.height(),
             resource.pricePerHour(),
             resource.description(),
-            resource.parkingType()
+            resource.parkingType(),
+            resource.imageUrls()
         );
     }
 }

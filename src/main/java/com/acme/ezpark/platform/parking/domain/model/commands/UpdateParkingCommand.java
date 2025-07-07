@@ -1,6 +1,7 @@
 package com.acme.ezpark.platform.parking.domain.model.commands;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public record UpdateParkingCommand(
     Long parkingId,
@@ -10,6 +11,7 @@ public record UpdateParkingCommand(
     BigDecimal height,
     BigDecimal pricePerHour,
     String description,
-    String parkingType
+    String parkingType,
+    List<String> imageUrls
 ) {
 }
