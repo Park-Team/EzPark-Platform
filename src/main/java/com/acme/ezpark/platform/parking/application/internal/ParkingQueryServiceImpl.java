@@ -7,6 +7,7 @@ import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingsByOwnerI
 import com.acme.ezpark.platform.parking.domain.services.ParkingQueryService;
 import com.acme.ezpark.platform.parking.infrastructure.persistence.jpa.repositories.ParkingRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,11 +24,13 @@ public class ParkingQueryServiceImpl implements ParkingQueryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Parking> handle(GetParkingByIdQuery query) {
         return parkingRepository.findById(query.parkingId());
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Parking> handle(GetParkingsByLocationQuery query) {
         List<Parking> candidateParkings = parkingRepository.findParkingsWithinRadius(
             query.latitude(), 
@@ -57,6 +60,7 @@ public class ParkingQueryServiceImpl implements ParkingQueryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Parking> handle(GetParkingsByOwnerIdQuery query) {
         return parkingRepository.findByOwnerIdAndIsActiveTrue(query.ownerId());
     }

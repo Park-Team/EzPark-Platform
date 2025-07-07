@@ -47,7 +47,7 @@ public class Parking {
     @Column(length = 1000)
     private String description;
     
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "parking_images", joinColumns = @JoinColumn(name = "parking_id"))
     @Column(name = "image_url", length = 500)
     private List<String> imageUrls = new ArrayList<>();
