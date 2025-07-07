@@ -41,10 +41,41 @@ public class GoogleCloudStorageService {
 
     public void deleteFile(String fileName) {
         if (!gcsEnabled || storage == null) {
+            System.out.println("Google Cloud Storage no está habilitado, no se puede eliminar: " + fileName);
             return;
         }
 
-        storage.delete(bucketName, fileName);
+        try {
+            // Extract filename from full URL if necessary
+            String actualFileName = extractFileNameFromUrl(fileName);
+            System.out.println("Eliminando archivo de GCS: " + actualFileName);
+            
+            boolean deleted = storage.delete(bucketName, actualFileName);
+            if (deleted) {
+                System.out.println("✅ Archivo eliminado exitosamente de GCS: " + actualFileName);
+            } else {
+                System.out.println("⚠️ El archivo no existía en GCS: " + actualFileName);
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error eliminando archivo de GCS: " + e.getMessage());
+        }
+    }
+
+    private String extractFileNameFromUrl(String fileUrl) {
+        // Si es una URL completa de GCS, extraer solo el nombre del archivo
+        if (fileUrl.contains("storage.googleapis.com")) {
+            String[] parts = fileUrl.split("/");
+            return parts[parts.length - 1];
+        }
+        
+        // Si es solo un path local, extraer el nombre del archivo
+        if (fileUrl.startsWith("/")) {
+            String[] parts = fileUrl.split("/");
+            return parts[parts.length - 1];
+        }
+        
+        // Si ya es solo el nombre del archivo, retornarlo
+        return fileUrl;
     }
 
     private String generateFileName(MultipartFile file) {

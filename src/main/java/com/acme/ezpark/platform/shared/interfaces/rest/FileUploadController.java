@@ -142,4 +142,30 @@ public class FileUploadController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
         }
     }
+
+    @Operation(summary = "Delete image", description = "Delete an image by URL")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Image deleted successfully"),
+        @ApiResponse(responseCode = "400", description = "Invalid URL"),
+        @ApiResponse(responseCode = "500", description = "Error deleting image")
+    })
+    @DeleteMapping("/image")
+    public ResponseEntity<Map<String, String>> deleteImage(
+            @Parameter(description = "Image URL to delete", required = true)
+            @RequestParam("url") String imageUrl) {
+        
+        try {
+            fileStorageService.deleteFile(imageUrl);
+            
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Image deleted successfully");
+            response.put("deletedUrl", imageUrl);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, String> error = new HashMap<>();
+            error.put("error", "Error deleting image: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
+    }
 }
