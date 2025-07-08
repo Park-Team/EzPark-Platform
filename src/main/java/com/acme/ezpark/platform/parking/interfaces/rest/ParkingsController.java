@@ -1,6 +1,7 @@
 package com.acme.ezpark.platform.parking.interfaces.rest;
 
 import com.acme.ezpark.platform.parking.domain.model.commands.DeleteParkingCommand;
+import com.acme.ezpark.platform.parking.domain.model.queries.GetAllParkingsQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingByIdQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingsByLocationQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingsByOwnerIdQuery;
@@ -133,5 +134,18 @@ public class ParkingsController {
         }
         
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/parkings")
+    @Operation(summary = "Get all parkings", description = "Get all active parkings")
+    public ResponseEntity<List<ParkingResource>> getAllParkings() {
+        var getAllParkingsQuery = new GetAllParkingsQuery();
+        var parkings = parkingQueryService.handle(getAllParkingsQuery);
+        
+        var parkingResources = parkings.stream()
+            .map(ParkingResourceFromEntityAssembler::toResourceFromEntity)
+            .toList();
+        
+        return ResponseEntity.ok(parkingResources);
     }
 }
