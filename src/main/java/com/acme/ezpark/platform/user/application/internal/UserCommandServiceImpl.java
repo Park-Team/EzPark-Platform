@@ -59,8 +59,15 @@ public class UserCommandServiceImpl implements UserCommandService {
 
     @Override
     public Optional<User> handle(UpdateUserCommand command) {
+        System.out.println("=== UpdateUserCommand ===");
+        System.out.println("UserId: " + command.userId());
+        System.out.println("ProfilePicture in command: " + command.profilePicture());
+        
         return userRepository.findById(command.userId())
             .map(user -> {
+                System.out.println("Usuario encontrado: " + user.getEmail());
+                System.out.println("Imagen anterior: " + user.getProfilePicture());
+                
                 user.updateProfile(
                     command.firstName(),
                     command.lastName(),
@@ -68,8 +75,11 @@ public class UserCommandServiceImpl implements UserCommandService {
                     command.birthDate(),
                     command.profilePicture()
                 );
-                userRepository.save(user);
-                return user;
+                
+                User savedUser = userRepository.save(user);
+                System.out.println("Imagen después de updateProfile: " + savedUser.getProfilePicture());
+                
+                return savedUser;
             });
     }
     

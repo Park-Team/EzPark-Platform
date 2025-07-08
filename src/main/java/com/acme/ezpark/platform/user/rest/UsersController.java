@@ -109,13 +109,21 @@ public class UsersController {
     public ResponseEntity<UserResource> updateUser(
             @Parameter(description = "User ID") @PathVariable Long userId,
             @RequestBody UpdateUserResource resource) {
+        
+        System.out.println("=== UPDATE USER ENDPOINT ===");
+        System.out.println("UserId: " + userId);
+        System.out.println("Resource: " + resource);
+        System.out.println("ProfilePicture in resource: " + resource.profilePicture());
+        
         var updateUserCommand = UpdateUserCommandFromResourceAssembler.toCommandFromResource(userId, resource);
         var user = userCommandService.handle(updateUserCommand);
         
         if (user.isEmpty()) {
+            System.out.println("ERROR: User not found or update failed");
             return ResponseEntity.notFound().build();
         }
         
+        System.out.println("SUCCESS: User updated. New profilePicture: " + user.get().getProfilePicture());
         var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
         return ResponseEntity.ok(userResource);
     }
