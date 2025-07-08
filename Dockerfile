@@ -29,6 +29,9 @@ FROM eclipse-temurin:21-jre-jammy
 # Set working directory
 WORKDIR /app
 
+# Install curl for health check (before creating non-root user)
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+
 # Create non-root user for security
 RUN groupadd -r appuser && useradd -r -g appuser appuser
 
@@ -43,9 +46,6 @@ USER appuser
 
 # Expose port (Render will set the PORT environment variable)
 EXPOSE 8080
-
-# Install curl for health check
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \

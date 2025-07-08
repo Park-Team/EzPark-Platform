@@ -30,5 +30,3 @@ services:
         value: false
       - key: JAVA_OPTS
         value: "-Xmx400m -Xms200m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
-      - key: SPRING_PROFILES_ACTIVE
-        value: prod
