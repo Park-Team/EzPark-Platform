@@ -1,6 +1,7 @@
 package com.acme.ezpark.platform.parking.application.internal;
 
 import com.acme.ezpark.platform.parking.domain.model.aggregates.Parking;
+import com.acme.ezpark.platform.parking.domain.model.queries.GetAllParkingsQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingByIdQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingsByLocationQuery;
 import com.acme.ezpark.platform.parking.domain.model.queries.GetParkingsByOwnerIdQuery;
@@ -63,6 +64,12 @@ public class ParkingQueryServiceImpl implements ParkingQueryService {
     @Transactional(readOnly = true)
     public List<Parking> handle(GetParkingsByOwnerIdQuery query) {
         return parkingRepository.findByOwnerIdAndIsActiveTrue(query.ownerId());
+    }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public List<Parking> handle(GetAllParkingsQuery query) {
+        return parkingRepository.findAllByIsActiveTrue();
     }
     
 

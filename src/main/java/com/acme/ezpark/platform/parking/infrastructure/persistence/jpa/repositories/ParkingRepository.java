@@ -13,6 +13,8 @@ import java.util.List;
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
     List<Parking> findByOwnerIdAndIsActiveTrue(Long ownerId);
     List<Parking> findByOwnerId(Long ownerId);
+    List<Parking> findAllByIsActiveTrue();
+    
     @Query("SELECT p FROM Parking p WHERE p.isActive = true AND p.isAvailable = true")
     List<Parking> findAllActiveAndAvailableParkings();
     
