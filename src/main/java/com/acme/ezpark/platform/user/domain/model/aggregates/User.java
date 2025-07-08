@@ -149,11 +149,6 @@ public class User {
         this.updatedAt = LocalDate.now();
     }
     
-    public void setProfilePicture(String profilePictureUrl) {
-        this.profilePicture = profilePictureUrl;
-        this.updatedAt = LocalDate.now();
-    }
-    
 
     public boolean isHost() {
         return role == UserRole.HOST || role == UserRole.BOTH;

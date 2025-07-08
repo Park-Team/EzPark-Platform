@@ -34,12 +34,10 @@ public class FileStorageService {
         
         // Use Google Cloud Storage if available
         if (googleCloudStorageService != null && googleCloudStorageService.isEnabled()) {
-            System.out.println("Using Google Cloud Storage for file upload");
             return googleCloudStorageService.uploadFile(file);
         }
         
         // Fallback to local storage
-        System.out.println("Using local storage for file upload");
         return storeFileLocally(file, subfolder);
     }
 
@@ -85,43 +83,23 @@ public class FileStorageService {
 
     public void deleteFile(String fileUrl) {
         try {
-            System.out.println("=== FileStorageService.deleteFile ===");
-            System.out.println("File URL to delete: " + fileUrl);
-            
             if (fileUrl != null) {
                 if (fileUrl.startsWith("https://storage.googleapis.com/")) {
-                    System.out.println("Detected Google Cloud Storage URL");
                     // Delete from Google Cloud Storage
                     if (googleCloudStorageService != null && googleCloudStorageService.isEnabled()) {
-                        System.out.println("Google Cloud Storage service is available and enabled");
                         String fileName = extractFileNameFromGcsUrl(fileUrl);
-                        System.out.println("Extracted filename: " + fileName);
                         googleCloudStorageService.deleteFile(fileName);
-                    } else {
-                        System.err.println("❌ Google Cloud Storage service is not available or disabled");
                     }
                 } else if (fileUrl.startsWith("/")) {
-                    System.out.println("Detected local file path");
                     // Delete local file
                     Path filePath = Paths.get(uploadDir + fileUrl);
-                    System.out.println("Full local path: " + filePath.toString());
-                    boolean deleted = Files.deleteIfExists(filePath);
-                    System.out.println("Local file deleted: " + deleted);
-                } else {
-                    System.err.println("❌ Unknown file URL format: " + fileUrl);
+                    Files.deleteIfExists(filePath);
                 }
-            } else {
-                System.err.println("❌ File URL is null");
             }
-            
-            System.out.println("✅ deleteFile method completed");
         } catch (IOException e) {
-            // Log error but don't throw exception
-            System.err.println("❌ IOException deleting file: " + fileUrl + " - " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error deleting file: " + fileUrl + " - " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("❌ General exception deleting file: " + fileUrl + " - " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("Error deleting file: " + fileUrl + " - " + e.getMessage());
         }
     }
 
