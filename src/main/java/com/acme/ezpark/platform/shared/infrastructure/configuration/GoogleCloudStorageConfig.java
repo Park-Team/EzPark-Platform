@@ -72,4 +72,10 @@ public class GoogleCloudStorageConfig {
             return null;
         }
     }
+    
+    @Bean
+    @Profile("test")
+    public Storage googleCloudStorageTest() {
+        return null;
+    }
 }

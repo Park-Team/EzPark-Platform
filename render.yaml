@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: ezpark-platform
+    env: docker
+    dockerfilePath: ./Dockerfile
+    region: oregon
+    plan: free
+    branch: main
+    healthCheckPath: /actuator/health
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: PORT
+        value: 8080
+      - key: DB_HOST
+        value: 34.61.141.252
+      - key: DB_PORT
+        value: 5432
+      - key: DB_NAME
+        value: ezpark_platform
+      - key: DB_USERNAME
+        value: ezpark_user
+      - key: DB_PASSWORD
+        value: ")oa]mVy@%rd6$[*"
+      - key: GCS_BUCKET
+        value: ezpark-images-bucket
+      - key: GCS_PROJECT_ID
+        value: ezpark-platform
+      - key: GCS_ENABLED
+        value: false
+      - key: JAVA_OPTS
+        value: "-Xmx400m -Xms200m -XX:+UseG1GC -XX:MaxGCPauseMillis=200"
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
